@@ -20,9 +20,9 @@ if ENV["BUILDKITE_PULL_REQUEST"] != nil
     in_whitelist = whitelist.include?(github.pr_author)
   end
 
-  print "is_member_of_pinterest: #{is_member_of_pinterest}"
-  print "modifies_CI: #{modifies_CI}"
-  print "in_whitelist: #{in_whitelist}"
+  print "is_member_of_pinterest: #{is_member_of_pinterest}\n"
+  print "modifies_CI: #{modifies_CI}\n"
+  print "in_whitelist: #{in_whitelist}\n"
   # block the PR if they modify CI and aren't pinterest or if they're not in the whitelist
   if !is_member_of_pinterest && (modifies_CI || !in_whitelist)
     if modifies_CI
