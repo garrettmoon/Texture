@@ -1,0 +1,34 @@
+require "net/http"
+require "json"
+
+CI_files = [/^.buildkite/, /^Dangerfile/]
+
+if ENV["BUILDKITE_PULL_REQUEST"].empty?
+  print "  - command: \"echo Build starting…\""
+else
+  is_member_of_pinterest = github.api.organization_member?("Pinterest", github.pr_author)
+  modifies_CI = false
+  in_whitelist = false
+
+  CI_files.each do |file_pattern|
+    if !git.modified_files.grep(file_pattern).empty?
+      modifies_CI = true
+      warn "PR modifies CI file"
+    end
+  end
+
+  if !is_member_of_pinterest
+    whitelist = JSON.parse(github.api.get "https://raw.githubusercontent.com/pinterest/ios-oss-ci/master/whitelist.json")["whitelist"]
+    in_whitelist = whitelist.include?(github.pr_author)
+  end
+
+  # block the PR if they modify CI and aren't pinterest or if they're not in the whitelist
+  if (!is_member_of_pinterest && modifies_CI) || !in_whitelist
+    if modifies_CI
+      fail "PR modifies CI which is not allowed"
+    end
+    print "  - block"
+  else
+    print "  - command: \"echo Automatic build allowed.\""
+  end
+end
