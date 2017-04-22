@@ -24,7 +24,7 @@ if ENV["BUILDKITE_PULL_REQUEST"] != nil
   print "modifies_CI: #{modifies_CI}"
   print "in_whitelist: #{in_whitelist}"
   # block the PR if they modify CI and aren't pinterest or if they're not in the whitelist
-  if (!is_member_of_pinterest && modifies_CI) || !in_whitelist
+  if !is_member_of_pinterest && (modifies_CI || !in_whitelist)
     if modifies_CI
       fail "PR modifies CI which is not allowed"
     end
