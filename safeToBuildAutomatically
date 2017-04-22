@@ -3,7 +3,7 @@ require "json"
 
 CI_files = [/^.buildkite/, /^Dangerfile/]
 
-if ENV["BUILDKITE_PULL_REQUEST"].empty?
+if ENV["BUILDKITE_PULL_REQUEST"] != nil
   print "  - command: \"echo Build starting…\""
 else
   is_member_of_pinterest = github.api.organization_member?("Pinterest", github.pr_author)
