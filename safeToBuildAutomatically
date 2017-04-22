@@ -8,8 +8,6 @@ def write_buildkite_result (result_string)
 end
 
 if ENV["BUILDKITE_PULL_REQUEST"] != nil
-  write_buildkite_result("  - label: \"Build starting…\"")
-else
   is_member_of_pinterest = github.api.organization_member?("Pinterest", github.pr_author)
   modifies_CI = false
   in_whitelist = false
@@ -31,8 +29,7 @@ else
     if modifies_CI
       fail "PR modifies CI which is not allowed"
     end
-    write_buildkite_result("  - block")
-  else
-    write_buildkite_result("  - label: \"Automatic build allowed.\"")
+    write_buildkite_result()
+    %x(echo "  - block" | buildkite-agent pipeline upload)
   end
 end
