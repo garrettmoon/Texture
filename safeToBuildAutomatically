@@ -3,8 +3,12 @@ require "json"
 
 CI_files = [/^.buildkite/, /^Dangerfile/]
 
+def write_buildkite_result (result_string)
+  File.write('buildkite_artifact', result_string)
+end
+
 if ENV["BUILDKITE_PULL_REQUEST"] != nil
-  print "  - command: \"echo Build starting…\""
+  write_buildkite_result("  - command: \"echo Build starting…\"")
 else
   is_member_of_pinterest = github.api.organization_member?("Pinterest", github.pr_author)
   modifies_CI = false
@@ -27,8 +31,8 @@ else
     if modifies_CI
       fail "PR modifies CI which is not allowed"
     end
-    print "  - block"
+    write_buildkite_result("  - block")
   else
-    print "  - command: \"echo Automatic build allowed.\""
+    write_buildkite_result("  - command: \"echo Automatic build allowed.\"")
   end
 end
