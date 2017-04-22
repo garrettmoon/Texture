@@ -3,10 +3,6 @@ require "json"
 
 CI_files = [/^.buildkite/, /^Dangerfile/]
 
-def write_buildkite_result (result_string)
-  File.write('buildkite_artifact', result_string)
-end
-
 if ENV["BUILDKITE_PULL_REQUEST"] != nil
   is_member_of_pinterest = github.api.organization_member?("Pinterest", github.pr_author)
   modifies_CI = false
@@ -29,7 +25,6 @@ if ENV["BUILDKITE_PULL_REQUEST"] != nil
     if modifies_CI
       fail "PR modifies CI which is not allowed"
     end
-    write_buildkite_result()
     %x(echo "  - block" | buildkite-agent pipeline upload)
   end
 end
