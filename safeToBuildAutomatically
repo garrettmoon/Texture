@@ -1,3 +1,8 @@
+# Why is this a dangerfile instead of just using octokit directly?
+# danger has methods for accessing the local git checkout and also
+# caches github requests to a local cache directory to avoid 
+# excessive calls to the github API and rate limiting.
+
 require "net/http"
 require "json"
 
