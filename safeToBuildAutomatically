@@ -6,9 +6,9 @@
 require "net/http"
 require "json"
 
-exclude_filename = 'exclude-from-build.json'
+exclude_path = 'CI/exclude-from-build.json'
 
-CI_files = [/^.buildkite/i, /^Dangerfile/i, /^#{exclude_filename}$/i]
+CI_files = [/^.buildkite/i, /^Dangerfile/i, /^#{exclude_path}$/i]
 
 pipeline = "steps:\n"
 
@@ -48,9 +48,9 @@ pipeline += "  - label: ':customs: Danger'\n    command: bundle exec danger\n"
 
 needs_build = true
 # check if we need a build step at all
-if File.exist?(exclude_filename)
+if File.exist?(exclude_path)
   all_files_exclude = true
-  exclude_patterns = File.read(exclude_filename)
+  exclude_patterns = File.read(exclude_path)
   exclude_patterns = JSON.parse(exclude_patterns)
   (git.modified_files + git.added_files + git.deleted_files).each do |file|
     exclude_patterns.each do |pattern|
@@ -66,7 +66,7 @@ if File.exist?(exclude_filename)
 end
 
 if needs_build
-  pipeline += "  - label: ':testflight: Tests'\n    command: run_tests_update_status.sh '#{ENV["UPDATE_STATUS_PATH"]}' '#{ENV["${BUILDKITE_PULL_REQUEST}"]}' '#{ENV["BUILDKITE_BUILD_URL"]}'\n"
+  pipeline += "  - label: ':testflight: Tests'\n    command: CI/run_tests_update_status.sh '#{ENV["UPDATE_STATUS_PATH"]}' '#{ENV["${BUILDKITE_PULL_REQUEST}"]}' '#{ENV["BUILDKITE_BUILD_URL"]}'\n"
 end
 
 %x(echo "#{pipeline}" | buildkite-agent pipeline upload)
