@@ -6,8 +6,14 @@
 require "net/http"
 require "json"
 
-CI_files = [/^.buildkite/, /^Dangerfile/]
+exclude_filename = 'exclude-from-build.json'
 
+CI_files = [/^.buildkite/i, /^Dangerfile/i, /^#{exclude_filename}$/i]
+
+pipeline = "steps:\n"
+
+# if this is a PR, check to see if we should automatically build or wait for employee
+# approval
 if ENV["BUILDKITE_PULL_REQUEST"] != nil
   is_member_of_pinterest = github.api.organization_member?("Pinterest", github.pr_author)
   modifies_CI = false
@@ -33,6 +39,34 @@ if ENV["BUILDKITE_PULL_REQUEST"] != nil
     if modifies_CI
       fail "PR modifies CI which is not allowed"
     end
-    %x(echo "  - block" | buildkite-agent pipeline upload)
+    pipeline += "  - block"
   end
 end
+
+# add danger build step
+pipeline += "  - label: ':customs: Danger'\n    command: bundle exec danger\n"
+
+needs_build = true
+# check if we need a build step at all
+if File.exist?(exclude_filename)
+  all_files_exclude = true
+  exclude_patterns = File.read(exclude_filename)
+  exclude_patterns = JSON.parse(exclude_patterns)
+  (git.modified_files + git.added_files + git.deleted_files).each do |file|
+    exclude_patterns.each do |pattern|
+      if pattern.match(file) == nil
+        all_files_exclude = false
+      end
+    end
+  end
+  
+  if all_files_exclude
+    needs_build = false
+  end
+end
+
+if needs_build
+  pipeline += "  - label: ':testflight: Tests'\n    command: run_tests_update_status.sh '#{ENV["UPDATE_STATUS_PATH"]}' '#{ENV["${BUILDKITE_PULL_REQUEST}"]}' '#{ENV["BUILDKITE_BUILD_URL"]}'\n"
+end
+
+%x(echo "#{pipeline}" | buildkite-agent pipeline upload)
