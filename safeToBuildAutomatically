@@ -44,7 +44,7 @@ if ENV["BUILDKITE_PULL_REQUEST"] != nil
 end
 
 # add danger build step
-pipeline += "  - label: ':customs: Danger'\n    command: bundle exec danger\n"
+pipeline += "  - label: ':customs: Danger'\n    command: bundle exec danger --verbose\n"
 pipeline += "    env:\n"
 pipeline += "      DANGER_GITHUB_API_TOKEN: '#{ENV["WRITEABLE_DANGER_GITHUB_API_TOKEN"]}'\n"
 
