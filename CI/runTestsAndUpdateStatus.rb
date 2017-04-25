@@ -17,8 +17,8 @@ update_status(client, "pending", "Building…")
 
 %x(./build_tmp.sh)
 
-print "Build status: #{$CHILD_STATUS}"
-if $CHILD_STATUS == 0
+print "Build status: '#{$?}'"
+if $? == 0
   update_status(client, "success", "All tests ran successfully.")
 else
   update_status(client, "failure", "Tests failed.")

@@ -2,3 +2,4 @@
 
 echo "success"
 
+exit 1
