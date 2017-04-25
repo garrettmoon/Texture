@@ -15,20 +15,20 @@ end
 
 update_status(client, repository, "pending", "Building…")
 
-puts "Build status: '#{$?}'"
-
 log_path = "log.txt"
 
 # capture the output of the command and print it as it's coming out
 log = ""
-IO.popen("./CI/build.sh").each do |line|
+process = IO.popen("./CI/build.sh")
+process.each do |line|
   log += line
   print line
 end
+process.close
 File.write(log_path, log)
 
 puts "Build status: '#{$?}'"
-if $? == 0
+if $?.to_i == 0
   update_status(client, repository, "success", "All tests ran successfully.")
 else
   if File.exist?(log_path)
