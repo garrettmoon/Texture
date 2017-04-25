@@ -17,7 +17,9 @@ update_status(client, "pending", "Building…")
 
 log_path = "log.txt"
 
-%x(./build_tmp.sh 2>&1|tee #{log_path})
+log = %x(./build_tmp.sh)
+puts log
+File.write(log_path, log)
 
 puts "Build status: '#{$?}'"
 if $? == 0
