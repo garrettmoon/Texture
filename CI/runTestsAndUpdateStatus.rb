@@ -17,7 +17,7 @@ update_status(client, repository, "pending", "Building…")
 
 log_path = "log.txt"
 
-log = %x(./CI/build_tmp.sh)
+log = %x(./CI/build.sh)
 puts log
 File.write(log_path, log)
 
