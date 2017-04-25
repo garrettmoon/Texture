@@ -60,8 +60,6 @@ if File.exist?(exclude_path)
       pattern = /#{string_pattern}/
       if pattern.match(file) != nil
         file_exclude = true
-      else
-        print "file: #{file} did not match #{pattern}"
       end
     end
     if file_exclude == false

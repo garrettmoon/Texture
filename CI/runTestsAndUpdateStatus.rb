@@ -14,7 +14,7 @@ def update_status(client, repo, state, description)
 end
 
 if ARGV.include?("--skipTests")
-  update_status(client, repository, "success", "No need for tests on this PR")
+  update_status(client, repository, "success", "PR did not modify testable files.")
   exit
 end
 

@@ -1,5 +1,3 @@
 [
-  "^plans",
-  "^CI/",
-  "safeToBuildAutomatically"
+  "^plans"
 ]
