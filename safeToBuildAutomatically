@@ -72,5 +72,5 @@ if needs_build
   pipeline += "      DANGER_GITHUB_API_TOKEN:#{ENV["WRITEABLE_DANGER_GITHUB_API_TOKEN"]}\n"
 end
 
-# %x(echo "#{pipeline}" > pipeline)
+%x(echo "#{pipeline}" > pipeline)
 %x(echo "#{pipeline}" | buildkite-agent pipeline upload)
