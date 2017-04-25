@@ -3,7 +3,7 @@ require "octokit"
 
 client = Octokit::Client.new(access_token: ENV["CUSTOM_BUILD_CI_API_TOKEN"])
 
-def update_status(state, description)
+def update_status(client, state, description)
   repository_uri = URI(ENV["BUILDKITE_REPO"])
   repository = repository_uri.path[1..-5]
   client.create_status(repository, ENV["BUILDKITE_COMMIT"], state, { 
@@ -13,12 +13,12 @@ def update_status(state, description)
   })
 end
 
-update_status("pending", "Building…")
+update_status(client, "pending", "Building…")
 
 %x(./build_tmp.sh)
 
 if $CHILD_STATUS == 0
-  update_status("success", "All tests ran successfully.")
+  update_status(client, "success", "All tests ran successfully.")
 else
-  update_status("failure", "Tests failed.")
+  update_status(client, "failure", "Tests failed.")
 end
