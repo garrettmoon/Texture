@@ -69,7 +69,7 @@ if needs_build
   pipeline += "  - label: ':testflight: Tests'\n"
   pipeline += "    command: CI/run_tests_update_status.sh '#{ENV["UPDATE_STATUS_PATH"]}' '#{ENV["${BUILDKITE_PULL_REQUEST}"]}' '#{ENV["BUILDKITE_BUILD_URL"]}'\n"
   pipeline += "    env:\n"
-  pipeline += "      DANGER_GITHUB_API_TOKEN: #{ENV["WRITEABLE_DANGER_GITHUB_API_TOKEN"]}\n"
+  pipeline += "      DANGER_GITHUB_API_TOKEN: '#{ENV["WRITEABLE_DANGER_GITHUB_API_TOKEN"]}'\n"
 end
 
 %x(echo "#{pipeline}" > pipeline)
