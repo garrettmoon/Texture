@@ -69,7 +69,7 @@ end
 
 if needs_build
   pipeline += "  - label: ':testflight: Tests'\n"
-  pipeline += "    command: ruby CI/run_tests_update_status.rb\n"
+  pipeline += "    command: ruby CI/runTestsAndUpdateStatus.rb\n"
 end
 
 %x(echo "#{pipeline}" > pipeline)
