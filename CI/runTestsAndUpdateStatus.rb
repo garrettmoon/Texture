@@ -22,4 +22,5 @@ if $? == 0
   update_status(client, "success", "All tests ran successfully.")
 else
   update_status(client, "failure", "Tests failed.")
+  abort("Tests failed")
 end
