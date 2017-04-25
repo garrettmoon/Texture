@@ -55,10 +55,16 @@ if File.exist?(exclude_path)
   exclude_patterns = File.read(exclude_path)
   exclude_patterns = JSON.parse(exclude_patterns)
   (git.modified_files + git.added_files + git.deleted_files).each do |file|
+    file_exclude = false
     exclude_patterns.each do |pattern|
-      if pattern.match(file) == nil
-        all_files_exclude = false
+      if pattern.match(file) != nil
+        file_exclude = true
+      else
+        print "file: #{file} did not match #{pattern}"
       end
+    end
+    if file_exclude == false
+      all_files_exclude = false
     end
   end
   
