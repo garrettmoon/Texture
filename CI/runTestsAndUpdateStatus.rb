@@ -1,5 +1,5 @@
 require "octokit"
-# require "pp"
+require "pp"
 
 client = Octokit::Client.new(access_token: ENV["CUSTOM_BUILD_CI_API_TOKEN"])
 
