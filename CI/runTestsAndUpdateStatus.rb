@@ -6,7 +6,7 @@ repository_uri = URI(ENV["BUILDKITE_REPO"])
 repository = repository_uri.path[1..-5]
 
 def update_status(client, repo, state, description)
-  client.create_status(repository, ENV["BUILDKITE_COMMIT"], state, { 
+  client.create_status(repo, ENV["BUILDKITE_COMMIT"], state, { 
     :context => "CI/Pinterest", 
     :target_url => ENV["BUILDKITE_BUILD_URL"], 
     :description => description
