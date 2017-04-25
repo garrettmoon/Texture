@@ -13,6 +13,11 @@ def update_status(client, repo, state, description)
   })
 end
 
+if ARGV.include?("--skipTests")
+  update_status(client, repository, "success", "No need for tests on this PR")
+  exit
+end
+
 update_status(client, repository, "pending", "Building…")
 
 log_path = "log.txt"

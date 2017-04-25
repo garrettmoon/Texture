@@ -70,6 +70,9 @@ end
 if needs_build
   pipeline += "  - label: ':testflight: Tests'\n"
   pipeline += "    command: ruby CI/runTestsAndUpdateStatus.rb\n"
+else
+  pipeline += "  - label: ':white_check_mark: No tests required'\n"
+  pipeline += "    command: ruby CI/runTestsAndUpdateStatus.rb --skipTests\n"
 end
 
 %x(echo "#{pipeline}" > pipeline)
