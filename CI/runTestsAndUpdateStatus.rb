@@ -17,7 +17,7 @@ update_status(client, "pending", "Building…")
 
 %x(./build_tmp.sh)
 
-print "Build status: '#{$?}'"
+puts "Build status: '#{$?}'"
 if $? == 0
   update_status(client, "success", "All tests ran successfully.")
 else
