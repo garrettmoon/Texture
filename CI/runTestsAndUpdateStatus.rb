@@ -17,8 +17,12 @@ update_status(client, repository, "pending", "Building…")
 
 log_path = "log.txt"
 
-log = %x(./CI/build.sh)
-puts log
+# capture the output of the command and print it as it's coming out
+log = ""
+IO.popen("./CI/build.sh").each do |line|
+  log += line
+  print line
+end
 File.write(log_path, log)
 
 puts "Build status: '#{$?}'"
