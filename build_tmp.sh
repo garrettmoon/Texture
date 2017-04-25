@@ -1,5 +1,5 @@
 #!/bin/bash
 
-echo "success"
+echo "tests failed"
 
-exit 0
+exit 1

@@ -15,12 +15,26 @@ end
 
 update_status(client, "pending", "Building…")
 
-%x(./build_tmp.sh)
+log_path = "log.txt"
+
+%x(./build_tmp.sh 2>&1|tee #{log_path})
 
 puts "Build status: '#{$?}'"
 if $? == 0
   update_status(client, "success", "All tests ran successfully.")
 else
+  if File.exist?(log_path)
+    client.create_gist({
+      :description => "Build log",
+      :public => true,
+      :files => {
+        "log.txt" => {
+          "content" => File.read(log_path)
+        }
+      }
+    })
+  end
+  
   update_status(client, "failure", "Tests failed.")
   abort("Tests failed")
 end
