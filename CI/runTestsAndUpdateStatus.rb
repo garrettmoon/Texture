@@ -36,7 +36,7 @@ else
       }
     })
     
-    client.add_comment(repository, ENV["BUILDKITE_PULL_REQUEST"], "Build log:\n#{gist["files"][log_path]["raw_url"]}")
+    client.add_comment(repository, ENV["BUILDKITE_PULL_REQUEST"], "Build failed with [log](#{gist["files"][log_path]["raw_url"]})")
   end
   
   update_status(client, repository, "failure", "Tests failed.")
