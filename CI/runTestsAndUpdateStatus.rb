@@ -15,6 +15,8 @@ end
 
 update_status(client, repository, "pending", "Building…")
 
+puts "Build status: '#{$?}'"
+
 log_path = "log.txt"
 
 # capture the output of the command and print it as it's coming out
