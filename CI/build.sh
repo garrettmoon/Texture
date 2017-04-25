@@ -1,5 +1,3 @@
 #!/bin/bash
 
-echo "tests failed"
-
-exit 1
+../build.sh
