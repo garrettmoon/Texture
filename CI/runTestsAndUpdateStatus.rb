@@ -26,7 +26,7 @@ if $? == 0
   update_status(client, "success", "All tests ran successfully.")
 else
   if File.exist?(log_path)
-    client.create_gist({
+    gist = client.create_gist({
       :description => "Build log",
       :public => true,
       :files => {
@@ -35,6 +35,8 @@ else
         }
       }
     })
+    
+    pp gist
   end
   
   update_status(client, "failure", "Tests failed.")
