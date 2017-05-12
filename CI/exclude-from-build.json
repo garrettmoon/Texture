@@ -1,3 +1,8 @@
 [
-  "^plans"
+  "^plans/",
+  "^docs/",
+  "^CI/exclude-from-build.json$",
+  "^README.md$",
+  "^CHANGELOG.md$",
+  "^UPGRADE.md$"
 ]
