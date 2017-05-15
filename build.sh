@@ -93,7 +93,7 @@ if [ "$MODE" = "tests_listkit" ]; then
     success="1"
 fi
 
-if [ "$MODE" = "examples" -o "$MODE" = "all" ]; then
+if [ "$MODE" = "examples" ]; then
     echo "Verifying that all AsyncDisplayKit examples compile."
     #Update cocoapods repo
     pod repo update master
@@ -168,7 +168,7 @@ if [ "$MODE" = "example" ]; then
     success="1"
 fi
 
-if [ "$MODE" = "life-without-cocoapods" -o "$MODE" = "all" ]; then
+if [ "$MODE" = "life-without-cocoapods" ]; then
     echo "Verifying that AsyncDisplayKit functions as a static library."
 
     set -o pipefail && xcodebuild \
@@ -180,7 +180,7 @@ if [ "$MODE" = "life-without-cocoapods" -o "$MODE" = "all" ]; then
     success="1"
 fi
 
-if [ "$MODE" = "framework" -o "$MODE" = "all" ]; then
+if [ "$MODE" = "framework" ]; then
     echo "Verifying that AsyncDisplayKit functions as a dynamic framework (for Swift/Carthage users)."
 
     set -o pipefail && xcodebuild \
@@ -192,14 +192,14 @@ if [ "$MODE" = "framework" -o "$MODE" = "all" ]; then
     success="1"
 fi
 
-if [ "$MODE" = "cocoapods-lint" -o "$MODE" = "all" ]; then
+if [ "$MODE" = "cocoapods-lint" ]; then
     echo "Verifying that podspec lints."
 
     set -o pipefail && pod env && pod lib lint
     success="1"
 fi
 
-if [ "$MODE" = "carthage" -o "$MODE" = "all" ]; then
+if [ "$MODE" = "carthage" ]; then
     echo "Verifying carthage works."
     
     set -o pipefail && carthage update && carthage build --no-skip-current
